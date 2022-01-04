@@ -67,12 +67,12 @@ def compileJavaCode(filename, code = "", ext="java", cb=None):
     compilers = getJavaCompiler()
     filedata = createJavaFile(filename, code, ext)
         
-    java = compilers["java"]
-    javac = compilers["javac"]
+    # java = compilers["java"] this has been deprecated
+    # javac = compilers["javac"] same as this. make sure you have java installed
     fileDir = filedata["fileDir"]
     fileName = filedata["filename"]
     
-    command = f"cd {parent_dir}/temp && {java} {fileName}"
+    command = f"cd {parent_dir}/temp && java {fileName}"
     
     output = {}
     
@@ -91,7 +91,9 @@ def runCompile():
     userInputs = Input("Write some java codes here..")
     output = compileJavaCode(filename, userInputs, "java")
     print("")
+    print("")
     print(output["output"])
+    print("")
     print("")
     print("Continue or pres ctrl+c to quit")
 
