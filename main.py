@@ -59,7 +59,7 @@ def createJavaFile(filename, code="", extension="java"):
     
     return { "fileDir": fileDir, "filename": fileName }
 
-def compileJavaCode(filename, code = "", ext="java", cb=None):
+def compileJavaCode(filename, code = "", ext="java"):
     
     filedata = createJavaFile(filename, code, ext)
         
