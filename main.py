@@ -1,4 +1,5 @@
 import os
+import platform
 import subprocess
 import pyfiglet
 from util.index import *
@@ -14,6 +15,8 @@ options = """
     Welcome To PyComp
     
     -r --run : run and compile java codes
+
+    -l  --lagrange : run and compile the lagrange Interpolation Formular
     
     -h --help : get some useful informations about this compile
 """
@@ -27,12 +30,6 @@ dirname = os.getcwd()
 child_dir = os.path.join(dirname)
 parent_dir = os.path.normpath(child_dir)
 
-
-# get java compilers
-
-def getJavaCompiler():
-    data = os.listdir(parent_dir + "/executable")
-    return {"java": data[0], "javac": data[1]}
 
 def createJavaFile(filename, code="", extension="java"):
     # check if temp folder is available
@@ -64,7 +61,6 @@ def createJavaFile(filename, code="", extension="java"):
 
 def compileJavaCode(filename, code = "", ext="java", cb=None):
     
-    compilers = getJavaCompiler()
     filedata = createJavaFile(filename, code, ext)
         
     # java = compilers["java"] this has been deprecated
@@ -97,14 +93,49 @@ def runCompile():
     print("")
     print("Continue or pres ctrl+c to quit")
 
+
+def compileLagrange():
+    dir = os.path.normpath(child_dir)
+    lagDir = f"{dir}/util/Lagrange.java"
+
+    # check if the lagrange directory exists.
+    if os.path.exists(lagDir) == False:
+        # print error messsage
+        print("")
+        print(f"Error running lagrangeInterpolation: cant locate Lagrange in {lagDir}")
+    
+    # check the os name and associate different commands to each os
+
+    command = ""
+
+    if platform.system() == "Linux":
+        command = f"java {lagDir}"
+    elif platform.system() == "Windows":
+        command = f"cd {dir}/util && java Lagrange.java"
+    else:
+        command = f"java {lagDir}"
+
+    # run the command using subprocess
+    compilerResult = subprocess.run(command, shell=True)
+
+    return compilerResult
+
+
 def init():
     userOpt = input()
 
-    if userOpt == "-h" or userOpt == "--heplp":
+    if userOpt == "-h" or userOpt == "--help":
         return print(options)
         
     elif userOpt == "-r" or userOpt == "--run":
         return runCompile()
+    elif userOpt == "-l" or userOpt == "--lagrange":
+        compileLagrange()
+        print("")
+        return
+    else:
+        print("")
+        print("Command you entered is invalid")
     
 while True:
     init()
