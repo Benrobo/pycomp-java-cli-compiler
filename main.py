@@ -34,12 +34,10 @@ parent_dir = os.path.normpath(child_dir)
 def createJavaFile(filename, code="", extension="java"):
     # check if temp folder is available
     # cause that were all java files would be created
-
     newDir = f"{parent_dir}/temp"
-    
-    print("newDir", newDir)
+    # print("newDir", newDir)
 
-    if os.path.isdir(parent_dir + "/temp") == False:
+    if os.path.exists(parent_dir + "/temp") == False:
         # create new directory
         os.mkdir(newDir)
         print("directory created")
@@ -68,7 +66,14 @@ def compileJavaCode(filename, code = "", ext="java"):
     fileDir = filedata["fileDir"]
     fileName = filedata["filename"]
     
-    command = f"cd {parent_dir}/temp && java {fileName}"
+    command = ""
+
+    if platform.system() == "Linux":
+        command = f"java {parent_dir}/temp/{fileName}"
+    elif platform.system() == "Windows":
+        command = f"cd {parent_dir}/temp && java {fileName}"
+    else:
+        command = f"java {parent_dir}/temp/{fileName}"
     
     output = {}
     
